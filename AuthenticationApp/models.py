@@ -25,6 +25,7 @@ class MyUserManager(BaseUserManager):
             user.first_name = email[:email.find("@")]            
 
         #Classify the Users as Students, Professors, Engineers
+        userClassed = None
         if is_student == True and is_professor == True and is_engineer == True:
         	#hack to set Admin using forms
         	user.is_admin = True
@@ -32,12 +33,14 @@ class MyUserManager(BaseUserManager):
        		user.is_student = True
        	elif is_professor == True:
        		user.is_professor = True
+       		userClassed= Teacher(teacher_id = user)
        	elif is_engineer == True:
        		user.is_engineer = True
        	else:
        		user.is_admin = True
         
         user.save(using=self._db)
+        userClassed.save(using=self._db)
         return user
 
     def create_superuser(self, email=None, password=None, first_name=None, last_name=None):
@@ -121,3 +124,5 @@ class MyUser(AbstractBaseUser):
 # post_save.connect(new_user_reciever, sender=MyUser)
              
 
+class Teacher(models.Model):
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
