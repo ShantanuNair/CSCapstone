@@ -20,11 +20,15 @@ class MyUserManager(BaseUserManager):
         user = self.model(email=email)
         user.set_password(password)
 
+        user.first_name = first_name
+        user.last_name = last_name
+
         #If first_name is not present, set it as email's username by default
         if first_name is None or first_name == "" or first_name == '':                                
             user.first_name = email[:email.find("@")]            
 
         #Classify the Users as Students, Professors, Engineers
+
         userClassed = None
         if is_student == True and is_professor == True and is_engineer == True:
         	#hack to set Admin using forms
@@ -33,13 +37,14 @@ class MyUserManager(BaseUserManager):
        		user.is_student = True
        	elif is_professor == True:
        		user.is_professor = True
-       		userClassed= Teacher(teacher_id = user)
        	elif is_engineer == True:
        		user.is_engineer = True
        	else:
        		user.is_admin = True
         
         user.save(using=self._db)
+        #If it is a teacher save it in db. Remove later
+        userClassed = Teacher(teacher=MyUser.objects.filter(email = email)[0])
         userClassed.save(using=self._db)
         return user
 
@@ -64,23 +69,9 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
-    email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True,
-    )
-
-    first_name = models.CharField(
-    	max_length=120,
-    	null=True,
-    	blank=True,
-    	)    
-
-    last_name = models.CharField(
-    	max_length=120,
-    	null=True,
-    	blank=True,
-    	)
+    email = models.EmailField(verbose_name='email address',max_length=255,unique=True,)
+    first_name = models.CharField(max_length=120,null=True,blank=True,)
+    last_name = models.CharField(max_length=120,null=True,blank=True,)
 
     is_active = models.BooleanField(default=True,)
     is_admin = models.BooleanField(default=False,)
@@ -126,3 +117,6 @@ class MyUser(AbstractBaseUser):
 
 class Teacher(models.Model):
     teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
+    # almamater=
+    # university=
+    # phoneNumber=
