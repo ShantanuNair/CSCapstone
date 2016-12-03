@@ -47,10 +47,10 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True,)
     is_admin = models.BooleanField(default=False,)
 
-    # #New fields added
-    # is_student = models.BooleanField(default=False,)
-    # is_professor = models.BooleanField(default=False,)
-    # is_engineer = models.BooleanField(default=False,)    
+    #New fields added
+    is_student = models.BooleanField(default=False,)
+    is_teacher = models.BooleanField(default=False,)
+    is_engineer = models.BooleanField(default=False,)
 
     objects = MyUserManager()
 

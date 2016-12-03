@@ -11,7 +11,7 @@ from django.contrib import messages
 
 
 from .forms import LoginForm, RegisterForm, UpdateForm
-from .models import MyUser, Student
+from .models import MyUser, Student, Teacher
 
 # Auth Views
 
@@ -45,21 +45,23 @@ def auth_logout(request):
     return render(request, 'index.html')
 
 def auth_register(request):
-	if request.user.is_authenticated():
-		return HttpResponseRedirect("/")
-	
-	form = RegisterForm(request.POST or None)
-	if form.is_valid():
-		new_user = MyUser.objects.create_user(email=form.cleaned_data['email'], 
-			password=form.cleaned_data["password2"], 
-			first_name=form.cleaned_data['firstname'], last_name=form.cleaned_data['lastname'])
-		new_user.save()	
-		#Also registering students		
-		new_student = Student(user = new_user)
-		new_student.save()
-		login(request, new_user);	
-		messages.success(request, 'Success! Your account was created.')
-		return render(request, 'index.html')
+    if request.user.is_authenticated():
+        return HttpResponseRedirect("/")
+
+    form = RegisterForm(request.POST or None)
+    if form.is_valid():
+        usertype = form.cleaned_data['usertype']
+        if usertype == 'Teacher':
+            new_user = MyUser.objects.create_user(email=form.cleaned_data['email'],
+                password=form.cleaned_data['password2'],
+                first_name=form.cleaned_data['firstname'], last_name=form.cleaned_data['lastname'])
+            new_user.is_teacher = True
+            new_user.save()
+            new_teacher = Teacher(teacher=new_user)
+            new_teacher.save()
+            login(request, new_user);
+            messages.success(request, 'Success! Your (Teacher) account was created.')
+            return render(request, 'index.html')
 
     context = {
         "form": form,
