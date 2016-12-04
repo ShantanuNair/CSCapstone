@@ -88,16 +88,20 @@ class MyUser(AbstractBaseUser):
 
 
 class Teacher(models.Model):
-    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
-    # almamater=
-    # university=
-    # phoneNumber=
+    teacher = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
+    #TODO: Add other attributes. Eg: Universities.
+    university = models.ForeignKey("UniversitiesApp.University", related_name="university", null=True)
+
+class Engineer(models.Model):
+    engineer = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
+    #TODO: Add other attributes. Eg: Companies.
+    almamater = models.ForeignKey("UniversitiesApp.University", related_name="almamater", null=True)
+    company = models.ForeignKey("CompaniesApp.Company", related_name="engineer_company", null=True)
 
 class Student(models.Model):
-    user = models.OneToOneField(
-        MyUser,
-        on_delete=models.CASCADE,
-        primary_key=True)
+    user = models.OneToOneField(MyUser,on_delete=models.CASCADE,primary_key=True)
+    major = models.CharField(max_length=256, null=True)
+    skills = models.CharField(max_length=2048, null=True)
 
     def get_full_name(self):        
         return "%s %s" %(self.user.first_name, self.user.last_name)
