@@ -101,14 +101,16 @@ def view_profile(request):
     #TODO: include bookmarks later in context
 
     #Get user from DB instead of using requests.user because it doesn't have is_teacher etc. fields.
+
     DBUser = MyUser.objects.filter(email=request.user.email)[0]
     userType = ""
+    print(DBUser.is_engineer)
     if DBUser.is_teacher:
         userType = "Teacher"
     elif DBUser.is_student:
         userType = "Student"
     elif DBUser.is_engineer:
-        usertype = "engineer"
+        userType = "engineer"
 
     context = {
         "userType" : userType,
