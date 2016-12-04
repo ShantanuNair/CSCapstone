@@ -87,8 +87,20 @@ def update_profile(request):
     return render(request, 'auth_form.html', context)
 
 def view_profile(request):
-    #include bookmarks later in context
+    #TODO: include bookmarks later in context
+
+    #Get user from DB instead of using requests.user because it doesn't have is_teacher etc. fields.
+    DBUser = MyUser.objects.filter(email=request.user.email)[0]
+    userType = ""
+    if DBUser.is_teacher:
+        userType = "Teacher"
+    elif DBUser.is_student:
+        userType = "Student"
+    elif DBUser.is_engineer:
+        usertype = "engineer"
+
     context = {
-        "user" : request.user,
+        "userType" : userType,
+        "user" : DBUser
     }
     return render(request, 'profile.html', context)
