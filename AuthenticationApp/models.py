@@ -88,14 +88,13 @@ class MyUser(AbstractBaseUser):
 
 
 class Teacher(models.Model):
-    teacher = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
+    teacher = models.OneToOneField(MyUser, on_delete=models.CASCADE, null = True)
     #TODO: Add other attributes. Eg: Universities.
     university = models.ForeignKey("UniversitiesApp.University", related_name="university", null=True)
 
 class Engineer(models.Model):
     engineer = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
     #TODO: Add other attributes. Eg: Companies.
-    almamater = models.ForeignKey("UniversitiesApp.University", related_name="almamater", null=True)
     company = models.ForeignKey("CompaniesApp.Company", related_name="engineer_company", null=True)
 
 class Student(models.Model):
