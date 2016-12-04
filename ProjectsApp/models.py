@@ -13,5 +13,11 @@ class Project(models.Model):
     # TODO Task 3.5: Add field for company relationship
     # TODO Task 3.5: Add fields for project qualifications (minimum required: programming language, years of experience, speciality)
 
+    company = models.ForeignKey("CompaniesApp.Company", related_name = "company", null=True)
+    #TODO: Fix attribs later
+    language = models.CharField(max_length = 50, null=True)
+    experience = models.CharField(max_length = 3, null = True)
+    specialty = models.CharField(max_length = 50, null=True)
+
     def __str__(self):
         return self.name

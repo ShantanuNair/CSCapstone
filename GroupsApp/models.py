@@ -10,6 +10,9 @@ class Group(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=300)
     members = models.ManyToManyField(MyUser)
-    
+
+    #Added project foreign key for when the group is assigned to the project.
+    project = models.ForeignKey(Project, related_name="project", null=True)
+
     def __str__(self):
         return self.name
