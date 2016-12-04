@@ -3,6 +3,8 @@
 Created by Naman Patwari on 10/10/2016.
 """
 from django.db import models
+
+from ProjectsApp.models import Project
 from AuthenticationApp.models import MyUser
 
 # Create your models here.
