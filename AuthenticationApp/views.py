@@ -11,7 +11,7 @@ from django.contrib import messages
 
 
 from .forms import LoginForm, RegisterForm, UpdateForm
-from .models import MyUser, Student, Teacher
+from .models import MyUser, Student, Teacher, Engineer
 
 # Auth Views
 
@@ -62,7 +62,18 @@ def auth_register(request):
             login(request, new_user);
             messages.success(request, 'Success! Your (Teacher) account was created.')
             return render(request, 'index.html')
-
+        elif usertype == 'Engineer':
+            new_user = MyUser.objects.create_user(email=form.cleaned_data['email'],
+                                                  password=form.cleaned_data['password2'],
+                                                  first_name=form.cleaned_data['firstname'],
+                                                  last_name=form.cleaned_data['lastname'])
+            new_user.is_engineer = True
+            new_user.save()
+            new_engineer = Engineer(engineer=new_user)
+            new_engineer.save()
+            login(request, new_user);
+            messages.success(request, 'Success! Your (Engineer) account was created.')
+            return render(request, 'index.html')
     context = {
         "form": form,
         "page_name" : "Register",

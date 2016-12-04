@@ -94,7 +94,7 @@ class Teacher(models.Model):
 
 class Engineer(models.Model):
     engineer = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
-    #TODO: Add other attributes. Eg: Companies.
+    #TODO: Add other attributes. Eg: Companies,Alma Mater, About, Contact Info
     company = models.ForeignKey("CompaniesApp.Company", related_name="engineer_company", null=True)
 
 class Student(models.Model):
