@@ -85,3 +85,10 @@ def update_profile(request):
         "links" : ["logout"],
     }
     return render(request, 'auth_form.html', context)
+
+def view_profile(request):
+    #include bookmarks later in context
+    context = {
+        "user" : request.user,
+    }
+    return render(request, 'profile.html', context)

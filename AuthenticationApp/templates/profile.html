@@ -1,0 +1,21 @@
+{% extends "body.html" %}
+
+{% block content %}
+
+	<!-- Content -->
+	<div class="container theme-showcase" role="main">
+		<div class="jumbotron">
+            <h3>Hi {{ user.first_name }} {{ user.last_name }}</h3>
+            <h3>Your email is {{ user.email }}</h3>
+            <!-- <p>{{ project.description }}</p>
+			<ul>
+				<li>Sponsored by {{ project.company }}</li>
+				<li>Developed in {{ project.language }}</li>
+				<li>Years of Experience Needed: {{ project.experience }}</li>
+			</ul> -->
+			<a href="/update" class="btn btn-info">Update Profile</a>
+		</div>
+
+	</div>
+
+{% endblock %}
