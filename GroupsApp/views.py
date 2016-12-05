@@ -107,6 +107,7 @@ def addMem(request):
         print(form)
         if form.is_valid():
             email1 = form.cleaned_data['email']
+            #TODO: Make sure email entered belongs to Student and not just MyUser
             usernames = MyUser.objects.filter(email=email1)
             print(len(usernames))
             if len(usernames) == 0:
