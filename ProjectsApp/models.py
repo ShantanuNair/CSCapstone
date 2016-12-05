@@ -3,12 +3,14 @@
 Created by Harris Christiansen on 10/02/16.
 """
 from django.db import models
+from datetime import datetime
+
 #TODO:Created_AT remove null=True and same for Updated_AT
 class Project(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=10000)
-    created_at = models.DateTimeField('date created',null=True)
-    updated_at = models.DateTimeField('date updated',null=True)
+    created_at = models.DateTimeField('date created',default = datetime.now)
+    updated_at = models.DateTimeField('date updated',default = datetime.now)
 
     # TODO Task 3.5: Add field for company relationship
     # TODO Task 3.5: Add fields for project qualifications (minimum required: programming language, years of experience, speciality)
