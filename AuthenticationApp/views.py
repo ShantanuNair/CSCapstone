@@ -120,7 +120,6 @@ def view_profile(request):
 
     DBUser = MyUser.objects.filter(email=request.user.email)[0]
     userType = ""
-    print(DBUser.is_engineer)
     if DBUser.is_teacher:
         userType = "Teacher"
     elif DBUser.is_student:

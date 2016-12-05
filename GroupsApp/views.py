@@ -21,6 +21,7 @@ def getGroup(request):
         in_name = request.GET.get('name', 'None')
         in_group = models.Group.objects.get(name__exact=in_name)
         is_member = in_group.members.filter(email__exact=request.user.email)
+
         context = {
             'group' : in_group,
             'userIsMember': is_member,
