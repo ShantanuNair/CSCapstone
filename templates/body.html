@@ -44,6 +44,9 @@
                             {% if request.user.is_student %}
 							    <li><a href="/group/form">Create Group</a></li>
                             {% endif %}
+                            {% if request.user.is_engineer %}
+							    <li><a href="/project/form">Create Project</a></li>
+                            {% endif %}
 						</ul>
 					</li>
 					<li><a href="/logout">Logout</a></li>
