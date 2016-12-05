@@ -21,6 +21,9 @@
 					<li><a href="/register">Register</a></li>
 				{% else %}
 					<li><a href="/profile"> Your Profile</a></li>
+                    {% if request.user.is_student %}
+                        <li><a href="/group/mygroups"> Your Groups</a></li>
+                    {% endif %}
                     <li role="presentation" class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 						  Groups/Organizations <span class="caret"></span>

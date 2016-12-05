@@ -12,7 +12,7 @@ from django.contrib import messages
 
 from .forms import LoginForm, RegisterForm, UpdateForm
 from .models import MyUser, Student, Teacher, Engineer
-
+from GroupsApp.models import Group
 # Auth Views
 
 def auth_login(request):
@@ -120,15 +120,18 @@ def view_profile(request):
 
     DBUser = MyUser.objects.filter(email=request.user.email)[0]
     userType = ""
+    groups_list = None
     if DBUser.is_teacher:
         userType = "Teacher"
     elif DBUser.is_student:
         userType = "Student"
+        groups_list = request.user.group_set.all()
     elif DBUser.is_engineer:
         userType = "engineer"
 
     context = {
         "userType" : userType,
-        "user" : DBUser
+        "user" : DBUser,
+        "groups": groups_list
     }
     return render(request, 'profile.html', context)

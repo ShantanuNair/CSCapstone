@@ -14,6 +14,26 @@
 				<li>Developed in {{ project.language }}</li>
 				<li>Years of Experience Needed: {{ project.experience }}</li>
 			</ul> -->
+            {% if request.user.is_student %}
+                <div class="table-responsive">
+			        <table class="table table-striped sortable">
+				        <thead>
+					        <tr>
+						        <th>Group</th>
+						        <th>Description</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+					        {% for item in groups %}
+					        <tr>
+						        <td><a href="/group?name={{ item.name }}">{{ item.name }}</a></td>
+						        <td>{{ item.description }}</td>
+					        </tr>
+					        {% endfor %}
+				        </tbody>
+			        </table>
+		        </div>
+            {% endif %}
 			<a href="/update" class="btn btn-info">Update Profile</a>
 		</div>
 
