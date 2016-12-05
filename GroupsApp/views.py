@@ -16,6 +16,17 @@ def getGroups(request):
     # render error page if user is not logged in
     return render(request, 'autherror.html')
 
+
+def getMyGroups(request):
+    if request.user.is_authenticated():
+        groups_list = request.user.group_set.all()
+        context = {
+            'groups' : groups_list,
+        }
+        return render(request, 'mygroups.html', context)
+    # render error page if user is not logged in
+    return render(request, 'autherror.html')
+
 def getGroup(request):
     if request.user.is_authenticated():
         in_name = request.GET.get('name', 'None')
