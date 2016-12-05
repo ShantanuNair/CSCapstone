@@ -57,7 +57,8 @@ def auth_register(request):
                 first_name=form.cleaned_data['firstname'], last_name=form.cleaned_data['lastname'])
             new_user.is_teacher = True
             new_user.save()
-            new_teacher = Teacher(teacher=new_user)
+            new_teacher = Teacher(teacher=new_user, university=form.cleaned_data['university'])
+            new_teacher.about = form.cleaned_data['about']
             new_teacher.save()
             login(request, new_user);
             messages.success(request, 'Success! Your (Teacher) account was created.')
@@ -69,7 +70,8 @@ def auth_register(request):
                                                   last_name=form.cleaned_data['lastname'])
             new_user.is_engineer = True
             new_user.save()
-            new_engineer = Engineer(engineer=new_user)
+            new_engineer = Engineer(engineer=new_user, company=form.cleaned_data['company'], almamater=form.cleaned_data['university'])
+            new_engineer.about = form.cleaned_data['about']
             new_engineer.save()
             login(request, new_user);
             messages.success(request, 'Success! Your (Engineer) account was created.')
@@ -81,7 +83,9 @@ def auth_register(request):
                                                   last_name=form.cleaned_data['lastname'])
             new_user.is_student = True
             new_user.save()
-            new_student = Student(user=new_user)
+            new_student = Student(user=new_user, university=form.cleaned_data['university'])
+            new_student.about = form.cleaned_data['about']
+            new_student.knownLanguages = form.cleaned_data['knownLanguagesText']
             new_student.save()
             login(request, new_user);
             messages.success(request, 'Success! Your (Student) account was created.')

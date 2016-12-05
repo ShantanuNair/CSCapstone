@@ -90,17 +90,21 @@ class MyUser(AbstractBaseUser):
 class Teacher(models.Model):
     teacher = models.OneToOneField(MyUser, on_delete=models.CASCADE, null = True)
     #TODO: Add other attributes. Eg: Universities.
-    university = models.ForeignKey("UniversitiesApp.University", related_name="university", null=True)
+    university = models.ForeignKey("UniversitiesApp.University", related_name="university_teachers", null=True)
+    about = models.CharField(max_length=500, null=True, blank=True)
 
 class Engineer(models.Model):
     engineer = models.OneToOneField(MyUser, on_delete=models.CASCADE, primary_key=True)
     #TODO: Add other attributes. Eg: Companies,Alma Mater, About, Contact Info
-    company = models.ForeignKey("CompaniesApp.Company", related_name="engineer_company", null=True)
+    company = models.ForeignKey("CompaniesApp.Company", related_name="company_engineers", null=True)
+    almamater = models.ForeignKey("UniversitiesApp.University", related_name="university_engineers", null=True)
+    about = models.CharField(max_length=1024, null=True, blank=True)
 
 class Student(models.Model):
     user = models.OneToOneField(MyUser,on_delete=models.CASCADE,primary_key=True)
-    major = models.CharField(max_length=256, null=True)
-    skills = models.CharField(max_length=2048, null=True)
+    university = models.ForeignKey("UniversitiesApp.University", related_name="university_students", null=True)
+    knownLanguages = models.CharField(max_length=2048, null=True)
+    about = models.CharField(max_length=500, null=True, blank=True)
 
     def get_full_name(self):        
         return "%s %s" %(self.user.first_name, self.user.last_name)

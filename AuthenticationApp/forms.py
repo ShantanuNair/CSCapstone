@@ -5,6 +5,8 @@ Created by Naman Patwari on 10/4/2016.
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django import forms
 from .models import MyUser
+from CompaniesApp.models import Company
+from UniversitiesApp.models import University
 
 class LoginForm(forms.Form):
     email = forms.CharField(label='Email')
@@ -23,6 +25,15 @@ class RegisterForm(forms.Form):
 
     usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
                                  label="User Type", widget=forms.Select())
+
+    #TODO: Add needed inputs (for S/T/E).
+    #univeristy acts as almamater for Engineers and just university for S/T.
+    university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
+    about = forms.CharField(label="About", widget=forms.Textarea, required=False)
+    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
+    # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
+
+    knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput, required=False)
 
     def clean_password2(self):
         # Check that the two password entries match
