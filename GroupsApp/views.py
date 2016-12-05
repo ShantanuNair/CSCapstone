@@ -5,6 +5,8 @@ from django.shortcuts import render
 
 from . import models
 from . import forms
+from .forms import addMemForm
+from AuthenticationApp.models import MyUser
 
 def getGroups(request):
     if request.user.is_authenticated():
@@ -84,4 +86,43 @@ def unjoinGroup(request):
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
-    
+
+def addMem(request):
+    if request.user.is_authenticated:
+        in_name = request.GET.get('name', 'None')
+        in_group = models.Group.objects.get(name__exact=in_name)
+        form = addMemForm(request.POST or None)
+        print(form.errors)
+        print(form)
+        if form.is_valid():
+            email1 = form.cleaned_data['email']
+            usernames = MyUser.objects.filter(email=email1)
+            print(len(usernames))
+            if len(usernames) == 0:
+                context = {
+                    "form": form,
+                    "page_name": "Add a Member",
+                    "button_value": "Add",
+                    "links": ["login"],
+                    "group": in_group,
+                }
+                return render(request, 'groupAdd.html', context)
+            username = usernames[0]
+            in_group.members.add(username)
+            in_group.save();
+            username.group_set.add(in_group)
+            username.save()
+            context = {
+                'group': in_group,
+                'userIsMember': True,
+            }
+            #form.save()
+            return render(request, 'group.html', context)
+        context = {
+            "form": form,
+            "page_name": "Add a Member",
+            "button_value": "Add",
+            "links": ["login"],
+            "group": in_group,
+        }
+        return render(request, 'groupAdd.html', context)
