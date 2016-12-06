@@ -5,6 +5,10 @@
 	<!-- Content -->
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
+            {% if project.is_assignedToGroup %}
+                <p>This project is assigned to {{ project.assignedGroup }}</p>
+                 <a href="/group?name={{ project.assignedGroup.name }}" class="btn btn-default">Click here to view Project discussion</a>
+            {% endif %}
 			<h1>{{ project.name }}</h1>
 			<p>{{project.description}}</p>
             <p>{{ project.created_at }}</p>
