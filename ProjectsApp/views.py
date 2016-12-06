@@ -6,6 +6,7 @@ from django.shortcuts import render
 from . import forms
 
 from . import models
+from AuthenticationApp.models import MyUser, Engineer
 
 def getProjects(request):
 	projects_list = models.Project.objects.all()
@@ -54,4 +55,20 @@ def getProjectFormSuccess(request):
             form = forms.ProjectForm()
         return render(request, 'projectform.html')
     # render error page if user is not logged in
+    return render(request, 'autherror.html')
+
+
+def getCompanyProjects(request):
+    if request.user.is_authenticated():
+        if not request.user.is_engineer:
+            return render(request, 'autherror.html')
+        #Get engineer's company to use when filtering projects.
+        userCompany = Engineer.objects.get(engineer=request.user).company
+        projects_list = models.Project.objects.filter(company=userCompany)
+
+        tableTitle = "Projects created by " + userCompany.name
+        return render(request, 'projects.html', {
+            'projects': projects_list,
+            'tableTitle': tableTitle
+        })
     return render(request, 'autherror.html')

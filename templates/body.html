@@ -24,6 +24,9 @@
                     {% if request.user.is_student %}
                         <li><a href="/group/mygroups"> Your Groups</a></li>
                     {% endif %}
+                    {% if request.user.is_engineer %}
+                        <li><a href="/project/companyProjects">Company Projects</a></li>
+                    {% endif %}
                     <li role="presentation" class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 						  Groups/Organizations <span class="caret"></span>
