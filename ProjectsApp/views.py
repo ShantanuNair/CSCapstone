@@ -43,6 +43,8 @@ def getProjectFormSuccess(request):
                     return render(request, 'projectform.html', {'error' : 'Error: That Project name already exists!'})
                 new_project = models.Project(name=form.cleaned_data['name'], description=form.cleaned_data['description'])
                 new_project.language = form.cleaned_data['skills']
+                new_project.experience = form.cleaned_data['experience']
+                new_project.specialty = form.cleaned_data['specialty']
                 new_project.save()
                 context = {
                     'name' : form.cleaned_data['name'],
