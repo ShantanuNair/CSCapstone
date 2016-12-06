@@ -15,4 +15,7 @@ urlpatterns = [
     url(r'^group/mygroups$', views.getMyGroups, name='GMine'),
     url(r'^group$', views.getGroup, name='Group'),
     url(r'^group/addmem$', views.addMem, name='GAddMem'),
+    url(r'^group/assignproj$', views.assignProj, name='GAssignProj'),
+    url(r'^group/suggestproj$', views.suggestProj, name='GSuggestProj'),
+    url(r'^group/leaveproj$', views.leaveProj, name='GLeaveProj'),
 ]

@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 from . import models
 from . import forms
-from .forms import addMemForm
+from .forms import addMemForm, assignProjForm
 from AuthenticationApp.models import MyUser
 
 def getGroups(request):
@@ -103,13 +103,10 @@ def addMem(request):
         in_name = request.GET.get('name', 'None')
         in_group = models.Group.objects.get(name__exact=in_name)
         form = addMemForm(request.POST or None)
-        print(form.errors)
-        print(form)
         if form.is_valid():
             email1 = form.cleaned_data['email']
             #TODO: Make sure email entered belongs to Student and not just MyUser
             usernames = MyUser.objects.filter(email=email1)
-            print(len(usernames))
             if len(usernames) == 0:
                 context = {
                     "form": form,
@@ -138,3 +135,66 @@ def addMem(request):
             "group": in_group,
         }
         return render(request, 'groupAdd.html', context)
+    return render(request, 'autherror.html')
+
+def assignProj(request):
+    if request.user.is_authenticated:
+        group_name = request.GET.get('name', 'None')
+        current_group = models.Group.objects.get(name__exact=group_name)
+        form = assignProjForm(request.POST or None)
+        if form.is_valid():
+            selectedproj = form.cleaned_data['project']
+            #Set projects and groups assignment to True
+            selectedproj.is_assignedToGroup = True
+            current_group.is_assignedToProject = True
+            #Save proj so group can link to it
+            selectedproj.save()
+            current_group.project = selectedproj
+            print(vars(current_group)) #DEBUGGING
+            current_group.save()
+            context = {
+                'group': current_group,
+                'userIsMember': True,
+            }
+            print() #DEBUGGING
+            return render(request, 'group.html', context)
+
+        context = {
+            "form": form,
+            "page_name": "Assign A Project",
+            "button_value": "Assign Project",
+            "links": ["login"],
+            "group": current_group,
+        }
+        return render(request, 'groupAssignProj.html', context)
+
+    return render(request, 'autherror.html')
+
+#TODO: Build suggestions and matching for groups-projects
+def suggestProj(request):
+    pass
+
+def leaveProj(request):
+    if request.user.is_authenticated:
+        group_name = request.GET.get('name', 'None')
+        current_group = models.Group.objects.get(name__exact=group_name)
+
+        changed_project = current_group.project
+        #Set projects and groups assignment to False
+        current_group.project_id = None
+        current_group.is_assignedToProject = False
+        changed_project.is_assignedToGroup = False
+        #print(changed_project.assignedGroup) # DEBUGGING
+        #print(vars(current_group))  # DEBUGGING
+        #print(vars(changed_project))  # DEBUGGING
+        #Save proj so group can link to it
+        changed_project.save()
+        current_group.save()
+        context = {
+            'group': current_group,
+            'userIsMember': True,
+        }
+        return render(request, 'group.html', context)
+
+
+    return render(request, 'autherror.html')

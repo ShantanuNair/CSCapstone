@@ -13,8 +13,9 @@ class Group(models.Model):
     description = models.CharField(max_length=300)
     members = models.ManyToManyField(MyUser)
 
-    #Added project foreign key for when the group is assigned to the project.
-    project = models.ForeignKey(Project, related_name="project", null=True)
+    #Added project onetoone field for when the group is assigned to the project.
+    project = models.OneToOneField(Project, related_name="assignedGroup", on_delete=models.SET_NULL, null=True)
+    is_assignedToProject = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
