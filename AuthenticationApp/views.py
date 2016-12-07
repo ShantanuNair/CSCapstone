@@ -12,6 +12,7 @@ from django.contrib import messages
 
 from .forms import LoginForm, RegisterForm, UpdateForm
 from .models import MyUser, Student, Teacher, Engineer
+from ProjectsApp.models import Project
 from GroupsApp.models import Group
 # Auth Views
 
@@ -135,3 +136,50 @@ def view_profile(request):
         "groups": groups_list
     }
     return render(request, 'profile.html', context)
+
+def view_bookmarks(request):
+
+    tableText = "Here are your bookmarked projects"
+
+    context = {
+        "user" : request.user,
+        "bookmarks": request.user.bookmarks.all(),
+        "tableText": tableText
+    }
+    return render(request, 'bookmarks.html', context)
+
+def add_bookmark(request):
+    if request.user.is_authenticated():
+        projectName= request.GET.get('name', 'None')
+        project = Project.objects.get(name=projectName)
+        request.user.bookmarks.add(project)
+        request.user.save()
+
+        #Redirect to bookmarks page.
+        tableText = "Here are your bookmarked projects"
+        context = {
+            "user": request.user,
+            "bookmarks": request.user.bookmarks.all(),
+            "tableText": tableText
+        }
+        return render(request, 'bookmarks.html', context)
+
+    return render(request, 'autherror.html')
+
+def remove_bookmark(request):
+    if request.user.is_authenticated():
+        projectName= request.GET.get('name', 'None')
+        project = Project.objects.get(name=projectName)
+        request.user.bookmarks.remove(project)
+        request.user.save()
+
+        #Redirect to bookmarks page.
+        tableText = "Here are your bookmarked projects"
+        context = {
+            "user": request.user,
+            "bookmarks": request.user.bookmarks.all(),
+            "tableText": tableText
+        }
+        return render(request, 'bookmarks.html', context)
+
+    return render(request, 'autherror.html')
