@@ -1,0 +1,33 @@
+{% extends "body.html" %}
+
+{% block content %}
+	<!-- Content -->
+    <div class="container theme-showcase" role="main">
+		<div class="jumbotron">
+			<h2>{{ course.tag }}</h2>
+			<h3>{{ course.name }}</h3>
+			<p>{{ course.description }}</p>
+		</div>
+    </div>
+    <div class="container" role="main">
+		<div class="table-responsive">
+			<table class="table table-striped sortable">
+				<thead>
+					<tr>
+						<th>Students Enrolled</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for student in course.members.all %}
+					<tr>
+						<td>{{ student.get_full_name }}</td>
+                        <td><a href="/course/removemem?name={{ course.tag }}&email={{ student.email }}" class="btn btn-default">Remove Student</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+            <a href="/course/addmem?name={{ course.tag }}" class="btn btn-default">Enroll a student in this course</a>
+		</div>
+	</div>
+
+{% endblock %}

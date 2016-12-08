@@ -24,6 +24,9 @@
                     {% if request.user.is_student %}
                         <li><a href="/group/mygroups"> My Groups</a></li>
                     {% endif %}
+                    {% if request.user.is_teacher %}
+                        <li><a href="/mycourses"> My Courses</a></li>
+                    {% endif %}
                     {% if request.user.is_engineer %}
                         <li><a href="/project/companyProjects">Company Projects</a></li>
                     {% endif %}

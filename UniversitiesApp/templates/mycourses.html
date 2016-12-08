@@ -1,0 +1,30 @@
+{% extends "body.html" %}
+
+{% block content %}
+
+	<!-- Content -->
+	<div class="container" role="main">
+        <h1>Courses you teach</h1>
+		<div class="table-responsive">
+			<table class="table table-striped sortable">
+				<thead>
+					<tr>
+						<th>Course</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for course in courseList %}
+					<tr>
+						<td><a href="/course?name={{ course.tag }}">{{ course.tag }} - {{ course.name }}</a></td>
+						<td>{{ course.description}}</td>
+                        <td><a href="/course/remove?name={{ course.tag }}" class="btn btn-danger" role="button">Remove Course</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+        <a href="/course/add" class="btn btn-primary" role="button">Add Course</a>
+		</div>
+	</div>
+
+{% endblock %}
