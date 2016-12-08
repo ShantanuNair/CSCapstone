@@ -20,9 +20,12 @@
 					<li><a href="/login">Login</a></li>
 					<li><a href="/register">Register</a></li>
 				{% else %}
-					<li><a href="/profile"> Your Profile</a></li>
+					<li><a href="/profile"> My Profile</a></li>
                     {% if request.user.is_student %}
-                        <li><a href="/group/mygroups"> Your Groups</a></li>
+                        <li><a href="/group/mygroups"> My Groups</a></li>
+                    {% endif %}
+                    {% if request.user.is_teacher %}
+                        <li><a href="/mycourses"> My Courses</a></li>
                     {% endif %}
                     {% if request.user.is_engineer %}
                         <li><a href="/project/companyProjects">Company Projects</a></li>
@@ -53,6 +56,7 @@
                             {% endif %}
 						</ul>
 					</li>
+                    <li><a href="/bookmarks"> My Bookmarks</a></li>
 					<li><a href="/logout">Logout</a></li>
 				{% endif %}
 				</ul>

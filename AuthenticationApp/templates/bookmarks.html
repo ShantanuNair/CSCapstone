@@ -1,7 +1,7 @@
 {% extends "body.html" %}
 
 {% block content %}
-	
+
 	<!-- Content -->
 	<div class="container" role="main">
         {% if tableTitle %}
@@ -11,29 +11,22 @@
 			<table class="table table-striped sortable">
 				<thead>
 					<tr>
-						<th>Project</th>
+						<th>Bookmarked Project</th>
                         <th>Description</th>
                         <th>Assigned to Group?</th>
 					</tr>
 				</thead>
 				<tbody>
-                    {% for project in projects %}
+                    {% for project in bookmarks %}
 					<tr>
 						<td><a href="/project?name={{ project.name }}">{{ project.name }}</a></td>
-
                         <td>{{ item.description }}</td>
                         {% if project.is_assignedToGroup %}
                             <td><a href="/group?name={{ project.assignedGroup }}">Yes</a></td>
-
                         {% else %}
                             <td>No</td>
                         {% endif %}
-
-                        {% if project in request.user.bookmarks.all %}
-                            <td><a href="/bookmarks/remove?name={{ project.name }}" class="btn btn-danger" role="button">Remove Bookmark</a></td>
-                        {% else %}
-                            <td><a href="/bookmarks/add?name={{ project.name }}" class="btn btn-primary" role="button">Bookmark Project</a></td>
-                        {% endif %}
+                        <td><a href="/bookmarks/remove?name={{ project.name }}" class="btn btn-danger" role="button">Unbookmark</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
