@@ -5,11 +5,13 @@
 	<!-- Content -->
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
-            <h3>Hi {{ user.first_name }} {{ user.last_name }}</h3>
-            <h3>Your email is {{ user.email }}</h3>
-            <h3>You are a {{ userType }}</h3>
-
-            {% if request.user.is_student %}
+            <h2>Viewing Student Profile - {{ user.first_name }} {{ user.last_name }}</h2>
+            <h3>University - {{ student.university }}</h3>
+            <h3>Languages known - {{ student.knownLanguages }}</h3>
+            <h3>Your years of experience is - {{ student.experience }}</h3>
+            <h3>Your specialty is - {{ student.specialty }}</h3>
+            <h3>About - {{ student.about }}</h3>
+            {% if userType == "Student" %}
                 <div class="table-responsive">
 			        <table class="table table-striped sortable">
 				        <thead>

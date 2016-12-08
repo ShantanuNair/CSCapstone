@@ -196,8 +196,8 @@ def assignProj(request):
             current_group.project = selectedproj
             print(vars(current_group)) #DEBUGGING
             current_group.save()
-            current_group = models.Group.objects.get(name__exact=in_group)
-            members_list = current_group.members.all()
+            curr_group = models.Group.objects.get(name__exact=group_name)
+            members_list = curr_group.members.all()
             stud = []
             for member in members_list:
                 stu = Student.objects.get(user=member)
@@ -290,8 +290,8 @@ def leaveProj(request):
         changed_project.save()
         current_group.save()
 
-        current_group = models.Group.objects.get(name__exact=in_group)
-        members_list = current_group.members.all()
+        curr_name = models.Group.objects.get(name__exact=group_name)
+        members_list = curr_name.members.all()
         stud = []
         for member in members_list:
             stu = Student.objects.get(user=member)

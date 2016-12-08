@@ -28,9 +28,13 @@
                         {% endif %}
 					</tr>
 					{% endfor %}
-                <td><a href = "/group/assignproj?name={{ group_name }}">Take one of these Projects</a></td>
 				</tbody>
 			</table>
+        {% if projects %}
+            <a href = "/group/assignproj?name={{ group_name }}">Take one of these Projects</a>
+        {% else %}
+            <a href = "/group/assignproj?name={{ group_name }}">Sorry! No suggestions. Click here to assign any project.</a>
+        {% endif %}
 		</div>
 	</div>
 
