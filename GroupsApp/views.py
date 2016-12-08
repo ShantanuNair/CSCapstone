@@ -94,7 +94,7 @@ def joinGroup(request):
         request.user.save()
 
         current_group = models.Group.objects.get(name__exact=in_group)
-        comments_list = Comment.objects.filter(group=current_rroup)
+        comments_list = Comment.objects.filter(group=current_group)
 
         members_list = current_group.members.all()
         stud = []
@@ -330,3 +330,21 @@ def leaveProj(request):
 
     return render(request, 'autherror.html')
 
+def removeGroup(request):
+    if request.user.is_authenticated():
+        in_name = request.GET.get('name', 'None')
+        in_group = models.Group.objects.get(name__exact=in_name)
+        members_list = in_group.members.all()
+        for member in members_list:
+            in_group.members.remove(member)
+            member.group_set.remove(in_group)
+            member.save()
+        in_group.delete()
+
+        groups_list = request.user.group_set.all()
+        context = {
+            'groups': groups_list,
+        }
+        return render(request, 'mygroups.html', context)
+
+    return render(request, 'autherror.html')
