@@ -106,12 +106,17 @@ class Student(models.Model):
     university = models.ForeignKey("UniversitiesApp.University", related_name="university_students", null=True)
     knownLanguages = models.CharField(max_length=2048, null=True)
     about = models.CharField(max_length=500, null=True, blank=True)
+    experience = models.CharField(max_length=3, null=True)
+    specialty = models.CharField(max_length=50, null=True)
 
     def get_full_name(self):        
         return "%s %s" %(self.user.first_name, self.user.last_name)
 
     def get_short_name(self):        
         return self.user.first_name
+
+    def get_user_skills(self):
+        return "%s" %(self.knownLanguages)
 
     def __str__(self):              #Python 3
         return self.user.email

@@ -15,3 +15,4 @@ class addMemForm(forms.Form):
 class assignProjForm(forms.Form):
     project = forms.ModelChoiceField(label="Projects Available",
                                      queryset=Project.objects.filter(is_assignedToGroup=False), required=True)
+

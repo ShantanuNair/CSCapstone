@@ -74,3 +74,9 @@ def getCompanyProjects(request):
             'tableTitle': tableTitle
         })
     return render(request, 'autherror.html')
+
+def getSuggestedProjects(request):
+	projects_list = models.Project.objects.all()
+	return render(request, 'projects.html', {
+        'projects': projects_list,
+    })
