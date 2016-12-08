@@ -70,10 +70,9 @@
     <div class="panel panel-default">
         <form method="post" enctype="multipart/form-data" action="/addcomment?group={{ group.name }}" class="panel-body validate">
         {% csrf_token %}
-             <label for="comment">Comment</label>
-             <input type="text" name="comment" id="comment" placeholder="Comment" class="form-control" data-bvalidator="required" data-bvalidator-msg="Comment Required">
-             <br>
-             <input type="submit" value="Submit" class="btn btn-primary">
+            <label for="comment">Comment</label> <textarea cols="40" id="comment" name="comment" rows="10"></textarea>
+            <br>
+            <input type="submit" value="Submit" class="btn btn-primary">
         </form>
     </div>
 </div>
@@ -94,7 +93,7 @@
                 {% for item in comments %}
                 <tr>
                     <td>{{ item.time }}</td>
-                    <td><b>{{ item.owner.get_full_name }}: </b>{{ item.comment }}</td>
+                    <td><b>{{ item.owner.get_full_name }}: </b>{% autoescape off %}{{ item.comment }}{% endautoescape %}</td>
                     {% if request.user == item.owner %}
                         <td><a href="/removecomment?id={{ item.id }}&group={{ group.name }}" class="btn btn-danger" role="button">Delete</a></td>
                     {% endif %}
