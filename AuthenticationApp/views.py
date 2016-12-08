@@ -137,6 +137,32 @@ def view_profile(request):
     }
     return render(request, 'profile.html', context)
 
+def view_studentProfile(request):
+    #TODO: include bookmarks later in context
+
+    #Get user from DB instead of using requests.user because it doesn't have is_teacher etc. fields.
+
+    studentEmail = request.GET.get('email', 'None')
+    DBMyUser = MyUser.objects.filter(email=studentEmail)[0]
+    DBUser = Student.objects.get(user=DBMyUser)
+    userType = ""
+    groups_list = None
+    if DBMyUser.is_teacher:
+        userType = "Teacher"
+    elif DBMyUser.is_student:
+        userType = "Student"
+        groups_list = DBMyUser.group_set.all()
+    elif DBMyUser.is_engineer:
+        userType = "engineer"
+
+    context = {
+        "userType" : userType,
+        "user" : DBMyUser,
+        "student": DBUser,
+        "groups": groups_list
+    }
+    return render(request, 'studentProfile.html', context)
+
 def view_bookmarks(request):
 
     tableText = "Here are your bookmarked projects"
