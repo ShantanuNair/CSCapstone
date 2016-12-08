@@ -146,22 +146,74 @@ class UserChangeForm(forms.ModelForm):
 class updateEngineer(forms.Form):
     """A form to creating new users. Includes all the required
       fields, plus a repeated password."""
-    email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=True)
+    #email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)
+   # password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
+    #password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=True)
 
     firstname = forms.CharField(label="First name", widget=forms.TextInput, required=False)
     lastname = forms.CharField(label="Last name", widget=forms.TextInput, required=False)
 
-    usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
-                                 label="User Type", widget=forms.Select())
+    #usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
+     #                            label="User Type", widget=forms.Select())
 
     # TODO: Add needed inputs (for S/T/E).
     # univeristy acts as almamater for Engineers and just university for S/T.
-    university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
+    #university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
     about = forms.CharField(label="About", widget=forms.Textarea, required=False)
-    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
+    #company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
+    # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
+
+    #knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput,
+                                         #required=False)
+   # experience = forms.CharField(label="Experience(years)", widget=forms.TextInput, required=False)
+    #specialty = forms.CharField(label="Specialty", widget=forms.TextInput, required=False)
+
+class updateTeacher(forms.Form):
+    """A form to creating new users. Includes all the required
+      fields, plus a repeated password."""
+    #email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)
+   # password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
+    #password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=True)
+
+    firstname = forms.CharField(label="First name", widget=forms.TextInput, required=False)
+    lastname = forms.CharField(label="Last name", widget=forms.TextInput, required=False)
+
+    #usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
+     #                            label="User Type", widget=forms.Select())
+
+    # TODO: Add needed inputs (for S/T/E).
+    # univeristy acts as almamater for Engineers and just university for S/T.
+    #university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
+    about = forms.CharField(label="About", widget=forms.Textarea, required=False)
+    #company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
+    # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
+
+    #knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput,
+                                        # required=False)
+    #experience = forms.CharField(label="Experience(years)", widget=forms.TextInput, required=False)
+    #specialty = forms.CharField(label="Specialty", widget=forms.TextInput, required=False)
+
+class updateStudent(forms.Form):
+    """A form to creating new users. Includes all the required
+      fields, plus a repeated password."""
+    #email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)
+   # password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
+    #password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=True)
+
+    firstname = forms.CharField(label="First name", widget=forms.TextInput, required=False)
+    lastname = forms.CharField(label="Last name", widget=forms.TextInput, required=False)
+
+    #usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
+     #                            label="User Type", widget=forms.Select())
+
+    # TODO: Add needed inputs (for S/T/E).
+    # univeristy acts as almamater for Engineers and just university for S/T.
+    #university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
+    about = forms.CharField(label="About", widget=forms.Textarea, required=False)
+    #company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
     # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
 
     knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput,
                                          required=False)
+    experience = forms.CharField(label="Experience(years)", widget=forms.TextInput, required=False)
+    specialty = forms.CharField(label="Specialty", widget=forms.TextInput, required=False)

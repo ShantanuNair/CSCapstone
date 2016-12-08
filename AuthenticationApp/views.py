@@ -10,10 +10,11 @@ from django.shortcuts import render
 from django.contrib import messages
 
 
-from .forms import LoginForm, RegisterForm, UpdateForm
+from .forms import LoginForm, RegisterForm, UpdateForm,updateEngineer, updateTeacher,updateStudent
 from .models import MyUser, Student, Teacher, Engineer
 from ProjectsApp.models import Project
 from GroupsApp.models import Group
+
 # Auth Views
 
 def auth_login(request):
@@ -119,7 +120,15 @@ def update_profile(request):
 def updateSubUser(request):
 
     usertype = ""
-    form = RegisterForm(request.POST or None)
+    #form = updateEngineer(request.POST or None)
+    form = None
+    if request.user.is_teacher:
+        form = updateTeacher(request.POST or None)
+    if request.user.is_engineer:
+        form = updateEngineer(request.POST or None)
+    if request.user.is_student:
+        form = updateStudent(request.POST or None)
+
     if form.is_valid():
         if request.user.is_teacher:
             usertype = 'Teacher'
@@ -135,8 +144,8 @@ def updateSubUser(request):
                 request.user.last_name = form.cleaned_data['lastname']
             request.user.save()
             toUpdate_teacher = Teacher.objects.get(teacher=request.user)#(teacher=new_user, university=form.cleaned_data['university'])
-            if form.cleaned_data['university'] != None:
-                toUpdate_teacher.university = form.cleaned_data['university']
+            #if form.cleaned_data['university'] != None:
+              #  toUpdate_teacher.university = form.cleaned_data['university']
             if form.cleaned_data['about'] != "":
                 toUpdate_teacher.about = form.cleaned_data['about']
             toUpdate_teacher.save()
@@ -163,8 +172,8 @@ def updateSubUser(request):
             #new_student = Student(user=new_user, university=form.cleaned_data['university'])
 
             toUpdate_Student = Student.objects.get(user=request.user)
-            if form.cleaned_data['university'] != None:
-                toUpdate_Student.university = form.cleaned_data['university']
+            #if form.cleaned_data['university'] != None:
+                #toUpdate_Student.university = form.cleaned_data['university']
             if form.cleaned_data['about'] != "":
                 toUpdate_Student.about = form.cleaned_data['about']
             if form.cleaned_data['knownLanguagesText'] != "":
@@ -180,8 +189,8 @@ def updateSubUser(request):
             return render(request, 'index.html')
     context = {
         "form": form,
-        "page_name" : "Register",
-        "button_value" : "Register",
+        "page_name" : "Update",
+        "button_value" : "Update",
         "links" : ["login"],
     }
     return render(request, 'auth_form.html', context)
