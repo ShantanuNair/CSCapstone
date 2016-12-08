@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^project/form$', views.getProjectForm, name='ProjectForm'),
     url(r'^project/formsuccess$', views.getProjectFormSuccess, name='ProjectFormSuccess'),
     url(r'^project/companyProjects$', views.getCompanyProjects, name='PCompanyProjects'),
+    url(r'^suggestedproject$', views.getSuggestedProjects, name='SuggestedProject'),
 
 ]

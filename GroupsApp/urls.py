@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^group/assignproj$', views.assignProj, name='GAssignProj'),
     url(r'^group/suggestproj$', views.suggestProj, name='GSuggestProj'),
     url(r'^group/leaveproj$', views.leaveProj, name='GLeaveProj'),
+
 ]

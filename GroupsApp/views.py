@@ -6,7 +6,8 @@ from django.shortcuts import render
 from . import models
 from . import forms
 from .forms import addMemForm, assignProjForm
-from AuthenticationApp.models import MyUser
+from AuthenticationApp.models import MyUser, Student
+from ProjectsApp.models import Project
 
 def getGroups(request):
     if request.user.is_authenticated():
@@ -35,9 +36,20 @@ def getGroup(request):
         in_group = models.Group.objects.get(name__exact=in_name)
         is_member = in_group.members.filter(email__exact=request.user.email)
 
+        current_group = models.Group.objects.get(name__exact=in_group)
+        members_list = current_group.members.all()
+        stud = []
+        for member in members_list:
+            stu = Student.objects.get(user=member)
+
+            skills = stu.knownLanguages
+            if skills not in stud:
+                stud.append(skills)
+        print(stud)
         context = {
             'group' : in_group,
             'userIsMember': is_member,
+            'student' : stud,
         }
         return render(request, 'group.html', context)
     # render error page if user is not logged in
@@ -76,9 +88,20 @@ def joinGroup(request):
         in_group.save();
         request.user.group_set.add(in_group)
         request.user.save()
+
+        current_group = models.Group.objects.get(name__exact=in_group)
+        members_list = current_group.members.all()
+        stud = []
+        for member in members_list:
+            stu = Student.objects.get(user=member)
+            skills = stu.knownLanguages
+            if skills not in stud:
+                stud.append(skills)
+
         context = {
             'group' : in_group,
             'userIsMember': True,
+            'student':stud,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
@@ -91,9 +114,19 @@ def unjoinGroup(request):
         in_group.save();
         request.user.group_set.remove(in_group)
         request.user.save()
+
+        current_group = models.Group.objects.get(name__exact=in_group)
+        members_list = current_group.members.all()
+        stud = []
+        for member in members_list:
+            stu = Student.objects.get(user=member)
+            skills = stu.knownLanguages
+            if skills not in stud:
+                stud.append(skills)
         context = {
             'group' : in_group,
             'userIsMember': False,
+            'student' : stud,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
@@ -121,9 +154,20 @@ def addMem(request):
             in_group.save();
             username.group_set.add(in_group)
             username.save()
+
+            current_group = models.Group.objects.get(name__exact=in_group)
+            members_list = current_group.members.all()
+            stud = []
+            for member in members_list:
+                stu = Student.objects.get(user=member)
+                skills = stu.knownLanguages
+                if skills not in stud:
+                    stud.append(skills)
+
             context = {
                 'group': in_group,
                 'userIsMember': True,
+                'student':stud,
             }
             #form.save()
             return render(request, 'group.html', context)
@@ -152,9 +196,19 @@ def assignProj(request):
             current_group.project = selectedproj
             print(vars(current_group)) #DEBUGGING
             current_group.save()
+            current_group = models.Group.objects.get(name__exact=in_group)
+            members_list = current_group.members.all()
+            stud = []
+            for member in members_list:
+                stu = Student.objects.get(user=member)
+
+                skills = stu.knownLanguages
+                if skills not in stud:
+                    stud.append(skills)
             context = {
                 'group': current_group,
                 'userIsMember': True,
+                'student':stud,
             }
             print() #DEBUGGING
             return render(request, 'group.html', context)
@@ -172,7 +226,52 @@ def assignProj(request):
 
 #TODO: Build suggestions and matching for groups-projects
 def suggestProj(request):
-    pass
+    projects_list = models.Project.objects.all()
+    print(projects_list)
+    group_name = request.GET.get('name', 'None')
+    current_group = models.Group.objects.get(name__exact=group_name)
+    members_list = current_group.members.all()
+    skill_list = []
+    yearsTot = 0
+    c = 0
+    for member in members_list:
+        stu = Student.objects.get(user = member)
+        skills = stu.knownLanguages.split(',')
+        for skill in skills:
+            if skill not in skill_list:
+                skill_list.append(skill)
+
+        sskills = stu.experience
+        if sskills!=None:
+            yearsTot= yearsTot + int(sskills)
+        c=c+1
+    print("The years list is")
+    print(yearsTot/c)
+
+    suggestedProj = []
+
+    for projects in projects_list:
+        project = Project.objects.get(name = projects)
+        skillsreqd = project.language
+        if skillsreqd != None:
+            skillsreqd = skillsreqd.split(',')
+            print(skillsreqd)
+            flag = True
+            for skill in skillsreqd:
+                if skill not in skill_list:
+                    flag = False
+
+            if flag == True:
+                if project not in suggestedProj and float(yearsTot/c)>float(project.experience):
+                    suggestedProj.append(project)
+    print (suggestedProj)
+   # for project in projects_list:
+
+    return render(request, 'SuggestedProjects.html', {
+        'projects': suggestedProj,
+        'group_name':group_name,
+    })
+
 
 def leaveProj(request):
     if request.user.is_authenticated:
@@ -190,11 +289,24 @@ def leaveProj(request):
         #Save proj so group can link to it
         changed_project.save()
         current_group.save()
+
+        current_group = models.Group.objects.get(name__exact=in_group)
+        members_list = current_group.members.all()
+        stud = []
+        for member in members_list:
+            stu = Student.objects.get(user=member)
+            skills = stu.knownLanguages
+            if skills not in stud:
+                stud.append(skills)
+
         context = {
             'group': current_group,
             'userIsMember': True,
+            'student':stud,
+
         }
         return render(request, 'group.html', context)
 
 
     return render(request, 'autherror.html')
+

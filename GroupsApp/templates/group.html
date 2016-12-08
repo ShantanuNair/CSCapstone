@@ -27,7 +27,24 @@
             {% endif %}
 		</div>
 	</div>
-	
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-striped sortable">
+				<thead>
+					<tr>
+						<th>Group Skills Combined</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in student %}
+					<tr>
+						<td>{{ item }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<div class="container">
 		<div class="table-responsive">
 			<table class="table table-striped sortable">
