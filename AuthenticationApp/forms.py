@@ -34,6 +34,8 @@ class RegisterForm(forms.Form):
     # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
 
     knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput, required=False)
+    experience = forms.CharField(label="Experience(years)", widget=forms.TextInput, required=False)
+    specialty = forms.CharField(label="Specialty)", widget=forms.TextInput, required=False)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -89,7 +91,7 @@ class UpdateForm(forms.ModelForm):
             email = self.cleaned_data.get("email")                               
             return email[:email.find("@")]      
         return first_name
-   
+
 
 
 """Admin Forms"""
@@ -137,4 +139,29 @@ class UserChangeForm(forms.ModelForm):
         # Regardless of what the user provides, return the initial value.
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
-        return self.initial["password"]        
+        return self.initial["password"]
+
+
+
+class updateEngineer(forms.Form):
+    """A form to creating new users. Includes all the required
+      fields, plus a repeated password."""
+    email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=True)
+
+    firstname = forms.CharField(label="First name", widget=forms.TextInput, required=False)
+    lastname = forms.CharField(label="Last name", widget=forms.TextInput, required=False)
+
+    usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
+                                 label="User Type", widget=forms.Select())
+
+    # TODO: Add needed inputs (for S/T/E).
+    # univeristy acts as almamater for Engineers and just university for S/T.
+    university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
+    about = forms.CharField(label="About", widget=forms.Textarea, required=False)
+    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
+    # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
+
+    knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput,
+                                         required=False)

@@ -103,7 +103,7 @@ def auth_register(request):
 
 @login_required
 def update_profile(request):
-    form = UpdateForm(request.POST or None, instance=request.user)
+    form = RegisterForm(request.POST or None, instance=request.user)
     if form.is_valid():
         form.save()
         messages.success(request, 'Success, your profile was saved!')
@@ -113,6 +113,79 @@ def update_profile(request):
         "page_name" : "Update",
         "button_value" : "Update",
         "links" : ["logout"],
+    }
+    return render(request, 'auth_form.html', context)
+
+def updateSubUser(request):
+
+    usertype = ""
+    form = RegisterForm(request.POST or None)
+    if form.is_valid():
+        if request.user.is_teacher:
+            usertype = 'Teacher'
+        if request.user.is_engineer:
+            usertype = 'Engineer'
+        if request.user.is_student:
+            usertype = 'Student'
+        #usertype = form.cleaned_data['usertype']
+        if usertype == 'Teacher':
+            if form.cleaned_data['firstname'] != "":
+                request.user.first_name = form.cleaned_data['firstname']
+            if form.cleaned_data['lastname'] != "":
+                request.user.last_name = form.cleaned_data['lastname']
+            request.user.save()
+            toUpdate_teacher = Teacher.objects.get(teacher=request.user)#(teacher=new_user, university=form.cleaned_data['university'])
+            if form.cleaned_data['university'] != "":
+                toUpdate_teacher.university = form.cleaned_data['university']
+            if form.cleaned_data['about'] != "":
+                toUpdate_teacher.about = form.cleaned_data['about']
+            toUpdate_teacher.save()
+            messages.success(request, 'Success! Your (Teacher) account was updated.')
+            return render(request, 'index.html')
+        elif usertype == 'Engineer':
+            if form.cleaned_data['firstname'] != "":
+                request.user.first_name = form.cleaned_data['firstname']
+            if form.cleaned_data['lastname'] != "":
+                request.user.last_name = form.cleaned_data['lastname']
+            request.user.save()
+
+            toUpdate_engineer = Engineer.objects.get(engineer = request.user)#(engineer=new_user, company=form.cleaned_data['company'], almamater=form.cleaned_data['university'])
+            if form.cleaned_data['about'] != "":
+                toUpdate_engineer.about = form.cleaned_data['about']
+            if form.cleaned_data['university'] != "":
+                toUpdate_engineer.almamater=form.cleaned_data['university']
+            toUpdate_engineer.save()
+            messages.success(request, 'Success! Your (Engineer) account was updated.')
+            return render(request, 'index.html')
+        elif usertype == 'Student':
+            if form.cleaned_data['firstname'] != "":
+                request.user.first_name = form.cleaned_data['firstname']
+            if form.cleaned_data['lastname'] != "":
+                request.user.last_name = form.cleaned_data['lastname']
+            request.user.save()
+            #new_student = Student(user=new_user, university=form.cleaned_data['university'])
+
+            toUpdate_Student = Student.objects.get(user=request.user)
+            if form.cleaned_data['university'] != "":
+                toUpdate_Student.university = form.cleaned_data['university']
+            if form.cleaned_data['university'] != "":
+                toUpdate_Student.about = form.cleaned_data['about']
+            if form.cleaned_data['knownLanguagesText'] != "":
+                toUpdate_Student.knownLanguages = form.cleaned_data['knownLanguagesText']
+            if form.cleaned_data['experience'] != "":
+                toUpdate_Student.experience = form.cleaned_data['experience']
+            if form.cleaned_data['specialty'] != "":
+                toUpdate_Student.specialty = form.cleaned_data['specialty']
+
+            toUpdate_Student.save()
+           # login(request, new_user);
+            messages.success(request, 'Success! Your (Student) account was updated.')
+            return render(request, 'index.html')
+    context = {
+        "form": form,
+        "page_name" : "Register",
+        "button_value" : "Register",
+        "links" : ["login"],
     }
     return render(request, 'auth_form.html', context)
 
