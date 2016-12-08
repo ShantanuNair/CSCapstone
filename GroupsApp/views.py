@@ -8,6 +8,7 @@ from . import forms
 from .forms import addMemForm, assignProjForm
 from AuthenticationApp.models import MyUser, Student
 from ProjectsApp.models import Project
+from CommentsApp.models import Comment
 
 def getGroups(request):
     if request.user.is_authenticated():
@@ -37,19 +38,22 @@ def getGroup(request):
         is_member = in_group.members.filter(email__exact=request.user.email)
 
         current_group = models.Group.objects.get(name__exact=in_group)
+        comments_list = Comment.objects.filter(group=current_group)
+
         members_list = current_group.members.all()
         stud = []
         for member in members_list:
             stu = Student.objects.get(user=member)
-
-            skills = stu.knownLanguages
-            if skills not in stud:
-                stud.append(skills)
+            skills = stu.knownLanguages.split(',')
+            for skill in skills:
+                if skill not in stud:
+                    stud.append(skill)
         print(stud)
         context = {
             'group' : in_group,
             'userIsMember': is_member,
             'student' : stud,
+            'comments':comments_list,
         }
         return render(request, 'group.html', context)
     # render error page if user is not logged in
@@ -90,18 +94,22 @@ def joinGroup(request):
         request.user.save()
 
         current_group = models.Group.objects.get(name__exact=in_group)
+        comments_list = Comment.objects.filter(group=current_rroup)
+
         members_list = current_group.members.all()
         stud = []
         for member in members_list:
             stu = Student.objects.get(user=member)
-            skills = stu.knownLanguages
-            if skills not in stud:
-                stud.append(skills)
+            skills = stu.knownLanguages.split(',')
+            for skill in skills:
+                if skill not in stud:
+                    stud.append(skill)
 
         context = {
             'group' : in_group,
             'userIsMember': True,
             'student':stud,
+            'comments':comments_list,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
@@ -116,17 +124,20 @@ def unjoinGroup(request):
         request.user.save()
 
         current_group = models.Group.objects.get(name__exact=in_group)
+        comments_list = Comment.objects.filter(group=current_group)
         members_list = current_group.members.all()
         stud = []
         for member in members_list:
             stu = Student.objects.get(user=member)
-            skills = stu.knownLanguages
-            if skills not in stud:
-                stud.append(skills)
+            skills = stu.knownLanguages.split(',')
+            for skill in skills:
+                if skill not in stud:
+                    stud.append(skill)
         context = {
             'group' : in_group,
             'userIsMember': False,
             'student' : stud,
+            'comments':comments_list,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
@@ -156,18 +167,21 @@ def addMem(request):
             username.save()
 
             current_group = models.Group.objects.get(name__exact=in_group)
+            comments_list = Comment.objects.filter(group=current_group)
+
             members_list = current_group.members.all()
             stud = []
             for member in members_list:
                 stu = Student.objects.get(user=member)
-                skills = stu.knownLanguages
-                if skills not in stud:
-                    stud.append(skills)
-
+                skills = stu.knownLanguages.split(',')
+                for skill in skills:
+                    if skill not in stud:
+                        stud.append(skill)
             context = {
                 'group': in_group,
                 'userIsMember': True,
                 'student':stud,
+                'comments':comments_list,
             }
             #form.save()
             return render(request, 'group.html', context)
@@ -197,18 +211,20 @@ def assignProj(request):
             print(vars(current_group)) #DEBUGGING
             current_group.save()
             curr_group = models.Group.objects.get(name__exact=group_name)
+            comments_list = Comment.objects.filter(group=curr_group)
             members_list = curr_group.members.all()
             stud = []
             for member in members_list:
                 stu = Student.objects.get(user=member)
-
-                skills = stu.knownLanguages
-                if skills not in stud:
-                    stud.append(skills)
+                skills = stu.knownLanguages.split(',')
+                for skill in skills:
+                    if skill not in stud:
+                        stud.append(skill)
             context = {
                 'group': current_group,
                 'userIsMember': True,
                 'student':stud,
+                'comments':comments_list,
             }
             print() #DEBUGGING
             return render(request, 'group.html', context)
@@ -291,18 +307,22 @@ def leaveProj(request):
         current_group.save()
 
         curr_name = models.Group.objects.get(name__exact=group_name)
+        comments_list = Comment.objects.filter(group=curr_name)
+
         members_list = curr_name.members.all()
         stud = []
         for member in members_list:
             stu = Student.objects.get(user=member)
-            skills = stu.knownLanguages
-            if skills not in stud:
-                stud.append(skills)
+            skills = stu.knownLanguages.split(',')
+            for skill in skills:
+                if skill not in stud:
+                    stud.append(skill)
 
         context = {
             'group': current_group,
             'userIsMember': True,
             'student':stud,
+            'comments':comments_list
 
         }
         return render(request, 'group.html', context)
