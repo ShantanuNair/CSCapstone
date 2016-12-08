@@ -94,7 +94,7 @@
                     <td>{{ item.time }}</td>
                     <td><b>{{ item.owner.get_full_name }}: </b>{{ item.comment }}</td>
                     {% if request.user == item.owner %}
-                        <td><a href="/removecomment?id={{ item.id }}" class="btn btn-danger" role="button">Delete</a></td>
+                        <td><a href="/removecomment?id={{ item.id }}&group={{ group.name }}" class="btn btn-danger" role="button">Delete</a></td>
                     {% endif %}
                 </tr>
                 {% endfor %}
