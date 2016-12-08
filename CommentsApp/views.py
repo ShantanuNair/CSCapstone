@@ -43,3 +43,27 @@ def addComment(request):
         else:
             form = forms.CommentForm()
     return render(request, 'comments.html')
+
+def removeComment(request):
+    comm_id = request.GET.get('id')
+    comment = models.Comment.objects.get(id=comm_id)
+    comment.delete()
+
+    group = request.GET.get('group')
+    current_Group = Group.objects.get(name=group)
+    comments_list = models.Comment.objects.filter(group=current_Group)
+    members_list = current_Group.members.all()
+    stud = []
+    for member in members_list:
+        stu = Student.objects.get(user=member)
+        skills = stu.knownLanguages
+        if skills not in stud:
+            stud.append(skills)
+    context = {
+        'group' : current_Group,
+        'userIsMember': True,
+        'comments' : comments_list,
+        'student':stud,
+
+    }
+    return render(request, 'group.html', context)
