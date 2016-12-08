@@ -14,6 +14,43 @@
 			        <table class="table table-striped sortable">
 				        <thead>
 					        <tr>
+						        <th>UserDetails</th>
+						        <th></th>
+					        </tr>
+				        </thead>
+				        <tbody>
+
+					        <tr>
+						        <td>university</td>
+						        <td>{{ SubUser.university }}</td>
+					        </tr>
+                         <tr>
+						        <td>knownLanguages</td>
+						        <td>{{ SubUser.knownLanguages }}</td>
+					        </tr>
+                         <tr>
+						        <td>about</td>
+						        <td>{{ SubUser.about }}</td>
+					        </tr>
+                         <tr>
+						        <td>specialty</td>
+						        <td>{{ SubUser.specialty }}</td>
+					        </tr>
+                         <tr>
+						        <td>Experience</td>
+						        <td>{{ SubUser.experience }}</td>
+					        </tr>
+				        </tbody>
+			        </table>
+		        </div>
+
+
+
+
+                <div class="table-responsive">
+			        <table class="table table-striped sortable">
+				        <thead>
+					        <tr>
 						        <th>Group</th>
 						        <th>Description</th>
 					        </tr>
@@ -29,8 +66,63 @@
 			        </table>
 		        </div>
             {% endif %}
+
+            {% if request.user.is_teacher %}
+                <div class="table-responsive">
+			        <table class="table table-striped sortable">
+				        <thead>
+					        <tr>
+						        <th>UserDetails</th>
+						        <th></th>
+					        </tr>
+				        </thead>
+				        <tbody>
+
+					        <tr>
+						        <td>university</td>
+						        <td>{{ SubUser.university }}</td>
+					        </tr>
+                         <tr>
+						        <td>about</td>
+						        <td>{{ SubUser.about }}</td>
+					        </tr>
+				        </tbody>
+			        </table>
+		        </div>
+            {% endif %}
+
+                {% if request.user.is_engineer %}
+                <div class="table-responsive">
+			        <table class="table table-striped sortable">
+				        <thead>
+					        <tr>
+						        <th>UserDetails</th>
+						        <th></th>
+					        </tr>
+				        </thead>
+				        <tbody>
+
+					        <tr>
+						        <td>almamater</td>
+						        <td>{{ SubUser.almamater }}</td>
+					        </tr>
+                         <tr>
+						        <td>about</td>
+						        <td>{{ SubUser.about }}</td>
+					        </tr>
+                        <tr>
+						        <td>company</td>
+						        <td>{{ SubUser.company }}</td>
+					        </tr>
+				        </tbody>
+			        </table>
+		        </div>
+
+            {% endif %}
+
 			<a href="/update" class="btn btn-info">Update Profile</a>
-		</div>
+        </div>
+
 
 	</div>
 

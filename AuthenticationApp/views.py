@@ -122,20 +122,25 @@ def view_profile(request):
     #Get user from DB instead of using requests.user because it doesn't have is_teacher etc. fields.
 
     DBUser = MyUser.objects.filter(email=request.user.email)[0]
+    SubUser = None
     userType = ""
     groups_list = None
     if DBUser.is_teacher:
         userType = "Teacher"
+        SubUser = Teacher.objects.get(teacher=DBUser)
     elif DBUser.is_student:
         userType = "Student"
         groups_list = request.user.group_set.all()
+        SubUser = Student.objects.get(user=DBUser)
     elif DBUser.is_engineer:
         userType = "engineer"
+        SubUser = Engineer.objects.get(engineer=DBUser)
 
     context = {
         "userType" : userType,
         "user" : DBUser,
-        "groups": groups_list
+        "groups": groups_list,
+        "SubUser":SubUser,
     }
     return render(request, 'profile.html', context)
 
