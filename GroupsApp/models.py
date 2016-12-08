@@ -6,7 +6,6 @@ from django.db import models
 
 from ProjectsApp.models import Project
 from AuthenticationApp.models import MyUser
-from CommentsApp.models import Comment
 
 # Create your models here.
 class Group(models.Model):
