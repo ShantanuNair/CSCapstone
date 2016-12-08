@@ -23,22 +23,17 @@ class RegisterForm(forms.Form):
     firstname = forms.CharField(label="First name", widget=forms.TextInput, required=False)
     lastname = forms.CharField(label="Last name", widget=forms.TextInput, required=False)
 
-
-
     usertype = forms.ChoiceField([('Student', 'Student'), ('Teacher', 'Teacher'), ('Engineer', 'Engineer')],
                                  label="User Type", widget=forms.Select())
 
     #TODO: Add needed inputs (for S/T/E).
     #univeristy acts as almamater for Engineers and just university for S/T.
-
     university = forms.ModelChoiceField(label="University", queryset=University.objects.all(), required=False)
     about = forms.CharField(label="About", widget=forms.Textarea, required=False)
     company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all(), required=False)
     # almamater = forms.ModelChoiceField(label="Almamater", queryset=University.objects.all(), required=False)
 
     knownLanguagesText = forms.CharField(label="Programming Languages (comma spearated)", widget=forms.TextInput, required=False)
-    experience = forms.CharField(label='experience', max_length=300,required=False)
-    specialty = forms.CharField(label='specialty', max_length=50, required=False)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -67,7 +62,7 @@ class UpdateForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
 
     class Meta:
-        model = MyUser        
+        model = MyUser
         fields = ('email', 'password', 'first_name', 'last_name')
 
     def clean_password(self):            
