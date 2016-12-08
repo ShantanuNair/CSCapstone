@@ -18,8 +18,10 @@
                     {% if group.is_assignedToProject == False %}
                         <a href="/group/assignproj?name={{ group.name }}" class="btn btn-default">Assign a Project</a>
                         <a href="/group/suggestproj?name={{ group.name }}" class="btn btn-default">Suggest a Project</a>
+                        <a href="/group/remove?name={{ group.name }}" class="btn btn-danger">Delete Group</a>
                     {% else %}
                         <a href="/group/leaveproj?name={{ group.name }}" class="btn btn-default">Leave Assigned Project</a>
+                        <a  class="btn btn-danger">Delete This Group (Leave Assigned Project First)</a>
                     {% endif %}
                 {% else %}
 			        <a href="/group/join?name={{ group.name }}" class="btn btn-default">Join this Group</a>

@@ -5,17 +5,27 @@
 	<!-- Content -->
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
+			<h1>{{ project.name }}</h1>
+			<p>Description - {{project.description}}</p>
+            <p>Created At - {{ project.created_at }}</p>
+            <p>Last Updated - {{ project.updated_at }}</p>
+            <h3>Required Qualifications:</h3>
+            <p>Language (Group Average) - {{ project.language }}</p>
+            <p>Years of experience (Group Average) - {{ project.experience }}</p>
+            <p>Specialty (optional) - {{ project.specialty }}</p>
             {% if project.is_assignedToGroup %}
                 <p>This project is assigned to {{ project.assignedGroup }}</p>
-                 <a href="/group?name={{ project.assignedGroup.name }}" class="btn btn-default">Click here to view Project discussion</a>
+                <a href="/group?name={{ project.assignedGroup.name }}" class="btn btn-default">Click here to view Project discussion</a>
+            {% else %}
+                <br>
+                <br>
+                <p>This project is awaiting assignment. Please be patient.</p>
             {% endif %}
-			<h1>{{ project.name }}</h1>
-			<p>{{project.description}}</p>
-            <p>{{ project.created_at }}</p>
-            <p>{{ project.updated_at }}</p>
-            <p>{{ project.language }}</p>
-            <p>{{ project.experience }}</p>
-            <p>{{ project.specialty }}</p>
+
+            {% if request.user.is_engineer %}
+                <a href="/project/update?name={{ project.name }}" class="btn btn-primary">Update Project Details</a>
+                <a href="/project/remove?name={{ project.name }}" class="btn btn-danger">Delete Project</a>
+            {% endif %}
 		</div>
 	</div>
 

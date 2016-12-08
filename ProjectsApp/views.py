@@ -3,6 +3,9 @@
 Created by Harris Christiansen on 10/02/16.
 """
 from django.shortcuts import render
+from django.contrib import messages
+from datetime import datetime
+
 from . import forms
 
 from . import models
@@ -79,4 +82,51 @@ def getSuggestedProjects(request):
 	projects_list = models.Project.objects.all()
 	return render(request, 'projects.html', {
         'projects': projects_list,
+    })
+
+def getUpdateProjectForm(request):
+    form = forms.ProjectForm(request.POST or None)
+    if form.is_valid():
+        project_name = request.GET.get('name', 'None')
+        project = models.Project.objects.get(name__exact=project_name)
+
+        project.name = form.cleaned_data['name']
+        project.description= form.cleaned_data['description']
+        project.language = form.cleaned_data['skills']
+        project.experience= form.cleaned_data['experience']
+        project.specialty= form.cleaned_data['specialty']
+        project.updated_at= datetime.now
+        project.save()
+
+        messages.success(request, 'Success, your Project was updated!')
+        context = {
+            'project': project,
+            #'userIsMember': is_member,
+        }
+        return render(request, 'project.html', context)
+
+    context = {
+        "form": form,
+        "page_name" : "Update Project Details",
+        "button_value" : "Update",
+        "links" : ["logout"],
+    }
+    return render(request, 'updateProject.html', context)
+
+def removeProject(request):
+    project_name = request.GET.get('name', 'None')
+    project = models.Project.objects.get(name__exact=project_name)
+    if project.is_assignedToGroup:
+        group = project.assignedGroup
+        group.project_id = None
+        group.is_assignedToProject = False
+        group.save()
+    project.delete()
+
+    userCompany = Engineer.objects.get(engineer=request.user).company
+    projects_list = models.Project.objects.filter(company=userCompany)
+    tableTitle = "Projects created by " + userCompany.name
+    return render(request, 'projects.html', {
+        'projects': projects_list,
+        'tableTitle': tableTitle
     })

@@ -21,7 +21,7 @@
 					<tr>
 						<td><a href="/project?name={{ project.name }}">{{ project.name }}</a></td>
 
-                        <td>{{ item.description }}</td>
+                        <td>{{ project.description }}</td>
                         {% if project.is_assignedToGroup %}
                             <td><a href="/group?name={{ project.assignedGroup }}">Yes</a></td>
 
