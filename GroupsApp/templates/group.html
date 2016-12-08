@@ -9,6 +9,7 @@
 			<p>{{ group.description }}</p>
             {% if group.is_assignedToProject %}
                 <h3>Group {{group.name}} is currently assigned to Project {{ group.project.name }}</h3>
+                <h3>Project Description: {{ group.project.description }}</h3>
                 <a href="/project?name={{ group.project.name}}" class="btn btn-default">Click here to view Project Page</a>
             {% endif %}
             {% if request.user.is_student %}
