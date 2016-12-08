@@ -135,7 +135,7 @@ def updateSubUser(request):
                 request.user.last_name = form.cleaned_data['lastname']
             request.user.save()
             toUpdate_teacher = Teacher.objects.get(teacher=request.user)#(teacher=new_user, university=form.cleaned_data['university'])
-            if form.cleaned_data['university'] != "":
+            if form.cleaned_data['university'] != None:
                 toUpdate_teacher.university = form.cleaned_data['university']
             if form.cleaned_data['about'] != "":
                 toUpdate_teacher.about = form.cleaned_data['about']
@@ -148,12 +148,9 @@ def updateSubUser(request):
             if form.cleaned_data['lastname'] != "":
                 request.user.last_name = form.cleaned_data['lastname']
             request.user.save()
-
             toUpdate_engineer = Engineer.objects.get(engineer = request.user)#(engineer=new_user, company=form.cleaned_data['company'], almamater=form.cleaned_data['university'])
             if form.cleaned_data['about'] != "":
                 toUpdate_engineer.about = form.cleaned_data['about']
-            if form.cleaned_data['university'] != "":
-                toUpdate_engineer.almamater=form.cleaned_data['university']
             toUpdate_engineer.save()
             messages.success(request, 'Success! Your (Engineer) account was updated.')
             return render(request, 'index.html')
@@ -166,9 +163,9 @@ def updateSubUser(request):
             #new_student = Student(user=new_user, university=form.cleaned_data['university'])
 
             toUpdate_Student = Student.objects.get(user=request.user)
-            if form.cleaned_data['university'] != "":
+            if form.cleaned_data['university'] != None:
                 toUpdate_Student.university = form.cleaned_data['university']
-            if form.cleaned_data['university'] != "":
+            if form.cleaned_data['about'] != "":
                 toUpdate_Student.about = form.cleaned_data['about']
             if form.cleaned_data['knownLanguagesText'] != "":
                 toUpdate_Student.knownLanguages = form.cleaned_data['knownLanguagesText']

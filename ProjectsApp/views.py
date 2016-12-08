@@ -95,7 +95,7 @@ def getUpdateProjectForm(request):
         project.language = form.cleaned_data['skills']
         project.experience= form.cleaned_data['experience']
         project.specialty= form.cleaned_data['specialty']
-        project.updated_at= datetime.now
+        project.updated_at= datetime.now()
         project.save()
 
         messages.success(request, 'Success, your Project was updated!')
