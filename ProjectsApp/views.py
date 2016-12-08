@@ -96,6 +96,7 @@ def getUpdateProjectForm(request):
         project.experience= form.cleaned_data['experience']
         project.specialty= form.cleaned_data['specialty']
         project.updated_at= datetime.now
+        project.save()
 
         messages.success(request, 'Success, your Project was updated!')
         context = {
@@ -111,3 +112,21 @@ def getUpdateProjectForm(request):
         "links" : ["logout"],
     }
     return render(request, 'updateProject.html', context)
+
+def removeProject(request):
+    project_name = request.GET.get('name', 'None')
+    project = models.Project.objects.get(name__exact=project_name)
+    if project.is_assignedToGroup:
+        group = project.assignedGroup
+        group.project_id = None
+        group.is_assignedToProject = False
+        group.save()
+    project.delete()
+
+    userCompany = Engineer.objects.get(engineer=request.user).company
+    projects_list = models.Project.objects.filter(company=userCompany)
+    tableTitle = "Projects created by " + userCompany.name
+    return render(request, 'projects.html', {
+        'projects': projects_list,
+        'tableTitle': tableTitle
+    })

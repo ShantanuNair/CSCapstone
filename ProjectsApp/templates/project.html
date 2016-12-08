@@ -24,6 +24,7 @@
 
             {% if request.user.is_engineer %}
                 <a href="/project/update?name={{ project.name }}" class="btn btn-primary">Update Project Details</a>
+                <a href="/project/remove?name={{ project.name }}" class="btn btn-danger">Delete Project</a>
             {% endif %}
 		</div>
 	</div>
